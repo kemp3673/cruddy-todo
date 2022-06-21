@@ -8,10 +8,24 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
-  var id = counter.getNextUniqueId();
-  items[id] = text;
-  callback(null, { id, text });
+  counter.getNextUniqueId(function(err, uniqueData) {
+    console.log('uniqueData: ', uniqueData);
+    let id = uniqueData;
+    fs.writeFile(exports.dataDir + '/' + id, text, (err) => {
+      console.log('test');
+      // Makes file per ID but need to direct to correct folder
+    });
+  });
+  // var id = counter.getNextUniqueId();
+  //console.log('id: ', id);
+  //items[id] = text;
+  //callback(null, { id, text });
 };
+
+// fs.writeFile('newfile.txt', "Hello world", (err) => {
+//   if (err) return callback(err);
+//   console.log("file created successfully!")
+// });
 
 exports.readAll = (callback) => {
   var data = _.map(items, (text, id) => {
